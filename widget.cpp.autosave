@@ -1,0 +1,126 @@
+#include "widget.h"
+#include "ui_widget.h"
+
+#include "main_interface.h"
+#include "ui_main_interface.h"
+
+#include <QtSerialPort/QSerialPort>
+#include <QtSerialPort/QSerialPortInfo>
+
+#include <QDebug>
+#include <QTimer>
+#include <QPushButton>
+
+Widget::Widget(QWidget *parent)
+    : QWidget(parent)
+    , ui(new Ui::Widget)
+{
+    COM_Swith = new QString;
+    timer = new QTimer;
+    serial = new QSerialPort;
+    COM_Buffer_Read = new QByteArray;
+    mm = new QString;
+    zh = new QString;
+    mm_sr = new QString;
+    zh_sr = new QString;
+
+    Number_Input_zh_mm = false;
+
+    ui->setupUi(this);
+    connect(ui->pushButton,&QPushButton::clicked,this,[=](){
+        ui->lineEdit_2->clear();
+        ui->lineEdit->clear();
+        *mm_sr = "";
+        *zh_sr = "";
+    });
+    connect(ui->pushButton_2,&QPushButton::clicked,this,[=](){
+       *mm_sr = ui->lineEdit_2->text();
+       *zh_sr = ui->lineEdit->text();
+        if(*mm_sr == "123456" && *zh_sr == "123456")
+        {
+            close();
+            main_interface * a = NEW main_interface;
+            a.show();
+            qDebug() << "ssss";
+        }
+    });
+    timer->start(250);
+    serial->close();
+    serial->setPortName("COM20");
+    //设置波特率
+    serial->setBaudRate(QSerialPort::Baud9600);
+    //设置数据位数
+    serial->setDataBits(QSerialPort::Data8);
+    //设置奇偶校验
+    serial->setParity(QSerialPort::NoParity);
+    //设置停止位
+    serial->setStopBits(QSerialPort::OneStop);
+    //设置流控制
+    serial->setFlowControl(QSerialPort::NoFlowControl);
+     if(!serial->open(QIODevice::ReadWrite))
+     {
+         qDebug() << "no!";
+     }
+     connect(timer,&QTimer::timeout,this,[=](){
+         *COM_Buffer_Read = serial->readLine();
+         if(*COM_Buffer_Read != "")
+         {
+             switch(COM_Buffer_Read->data()[0])
+             {
+
+             case 'A':
+                 if(Number_Input_zh_mm)
+                 {
+                    Number_Input_zh_mm = false;
+                 }else
+                {
+                    Number_Input_zh_mm = true;
+                }
+                 break;
+
+             case 'B':
+                 if(!Number_Input_zh_mm)
+                 {
+                     *zh_sr = zh_sr->left(zh_sr->size() - 1);
+                     ui->lineEdit->setText(*zh_sr);
+                 }else if(Number_Input_zh_mm)
+                 {
+                     *mm_sr = mm_sr->left(mm_sr->size() - 1);
+                     ui->lineEdit_2->setText(*mm_sr);
+                 }
+                 break;
+
+             case 'C':
+                 ui->pushButton->click();
+                 break;
+
+             case 'D':
+                 ui->pushButton_2->click();
+                 break;
+
+             default:
+                 for(int i = 0;i < 10; i++)
+                 {
+                     QString temp_number;
+                     temp_number = QString(COM_Buffer_Read->data()[0]);
+                     if(temp_number == QString::number(i) && !Number_Input_zh_mm)
+                     {
+                         *zh_sr += COM_Buffer_Read->data()[0];
+                         ui->lineEdit->setText(*zh_sr);
+                     }else if(temp_number == QString::number(i) && Number_Input_zh_mm)
+                     {
+                         *mm_sr += COM_Buffer_Read->data()[0];
+                         ui->lineEdit_2->setText(*mm_sr);
+                     }
+                  }
+                 break;
+             }
+         }
+     });
+}
+
+Widget::~Widget()
+{
+    delete ui;
+}
+

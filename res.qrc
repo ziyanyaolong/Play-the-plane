@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/background">
+        <file>res/1.jpg</file>
+        <file>res/2.jpg</file>
+        <file>res/3.jpg</file>
+    </qresource>
+    <qresource prefix="/sounds">
+        <file>sounds/bullet_fired.wav</file>
+        <file>sounds/Heavy_artillery.wav</file>
+        <file>sounds/explosion.wav</file>
+    </qresource>
+    <qresource prefix="/music">
+        <file>music/music1.flac</file>
+        <file>music/music1.wav</file>
+    </qresource>
+</RCC>
