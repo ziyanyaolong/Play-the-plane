@@ -15,14 +15,16 @@ public:
     bass_object(QPoint point);
     bass_object(QPoint point, double Volume, double HP_max, double HP_min);
 
-    virtual int HP_set(double a) { return HP = a; }
-    virtual int HP_max();
-    virtual int HP_min();
-    virtual int HP_add();
-    virtual int HP_add(double a);
-    virtual int HP_reduce();
-    virtual int HP_reduce(double a);
-    virtual int HP_Test();
+    virtual double HP_set_min(double a) { return HP_MIN = a; }
+    virtual double HP_set_max(double a) { return HP_MAX = a; }
+    virtual double HP_set(double a) { return HP = a; }
+    virtual double HP_max();
+    virtual double HP_min();
+    virtual double HP_add();
+    virtual double HP_add(double a);
+    virtual double HP_reduce();
+    virtual double HP_reduce(double a);
+    virtual double HP_Test();
     virtual int volume_() { return volume; }
     virtual int set_volume(double Volume) { return volume = Volume; }
     virtual int add_volume(double Volume) { return volume += Volume; }

@@ -22,11 +22,6 @@ public:
     explicit main_interface(bool fs = 0,QWidget *parent = nullptr,object_manager * Object_Manager_ = nullptr);
     virtual ~main_interface();
 
-    double return_Movable_area_highly_1() { return Movable_area_highly_1; }
-    double return_Movable_area_width_1() { return Movable_area_width_1; }
-    double return_Movable_area_highly_2() { return Movable_area_highly_2; }
-    double return_Movable_area_width_2() { return Movable_area_width_2; }
-
     void bullet_calculation();
     void bullet_management();
 

@@ -86,16 +86,20 @@ enemy * object_manager::new_enemy(int a)
         enemy_1[a]->return_bullet()->HP_add(enemy_1[a]->volume_() * 2);
         if(enemy_1[a]->volume_() >= enemy_1_template->volume_())
         {
+            enemy_1[a]->HP_set_max(enemy_1[a]->HP_Test() * RandomNum_Double(1.6,2.6));
             enemy_1[a]->reduce_speed(enemy_1[a]->volume_() / enemy_1_template->volume_() * RandomNum_Double(1.3,2.3));
-            enemy_1[a]->HP_add(enemy_1[a]->HP_Test() * RandomNum_Double(1.6,2.6));
+            enemy_1[a]->HP_set(enemy_1[a]->HP_max());
             enemy_1[a]->return_bullet()->HP_add(enemy_1[a]->return_bullet()->HP_Test() * RandomNum_Double(1.3,2.6));
             enemy_1[a]->return_bullet()->add_volume(enemy_1[a]->volume_() / enemy_1_template->volume_() * RandomNum_Double(1.3,2.6));
         }else
         {
+            enemy_1[a]->HP_set_max(enemy_1[a]->HP_Test() * RandomNum_Double(1/1.6,1/2.6));
             enemy_1[a]->add_speed(enemy_1[a]->volume_() / enemy_1_template->volume_() * RandomNum_Double(1.6,2.6));
-            enemy_1[a]->HP_reduce(enemy_1[a]->HP_Test() * RandomNum_Double(1.3,2.3));
+            enemy_1[a]->HP_set(enemy_1[a]->HP_max());
             enemy_1[a]->return_bullet()->HP_reduce(enemy_1[a]->return_bullet()->HP_Test() * RandomNum_Double(1.6,2.3));
             enemy_1[a]->return_bullet()->reduce_volume(enemy_1[a]->volume_() * RandomNum_Double(1.6,2.3));
+            qDebug() << "HP:" <<enemy_1[a]->HP_Test();
+            qDebug() << "HP_max:" <<enemy_1[a]->HP_max();
         }
         enemy_1[a]->set_my_color(QColor(RandomNum(0,255),RandomNum(0,255),RandomNum(0,255)));
     }

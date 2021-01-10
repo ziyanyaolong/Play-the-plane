@@ -13,8 +13,6 @@
 #include <QDebug>
 #include <QTimer>
 #include <QPushButton>
-//#include <GL/glu.h>
-//#include <QtOpenGL>
 
 #define MMSHEDING ""
 #define ZHSHEDING ""

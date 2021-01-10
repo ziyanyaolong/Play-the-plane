@@ -113,11 +113,11 @@ main_interface::main_interface(
         }
     }
     background1 = new QImage(":/background/res/1.jpg");
-    *background1 = background1->scaled(Movable_area_width_2, return_Movable_area_highly_2() - return_Movable_area_highly_1(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    *background1 = background1->scaled(Movable_area_width_2, Movable_area_highly_2 - Movable_area_highly_1, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     background2 = new QImage(":/background/res/2.jpg");
-    *background2 = background2->scaled(Movable_area_width_2, return_Movable_area_highly_1(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    *background2 = background2->scaled(Movable_area_width_2, Movable_area_highly_1, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
     background3 = new QImage(":/background/res/3.jpg");
-    *background3 = background3->scaled(Movable_area_width_2, return_Movable_area_highly_1(), Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
+    *background3 = background3->scaled(Movable_area_width_2, Movable_area_highly_1, Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
 }
 
 void main_interface::Game_keyboard_control()
@@ -319,8 +319,8 @@ void main_interface::paintEvent(QPaintEvent *)
                      QColor(255,255,255));
 
     painter->drawImage(QPoint(0,0),*background2);
-    painter->drawImage(QPoint(0,return_Movable_area_highly_2()),*background3);
-    painter->drawImage(QPoint(0,return_Movable_area_highly_1()),*background1);
+    painter->drawImage(QPoint(0,Movable_area_highly_2),*background3);
+    painter->drawImage(QPoint(0,Movable_area_highly_1),*background1);
     QFont font("宋体",20,QFont::Bold,true);//设置字体的类型，大小，加粗，斜体
     font.setUnderline(false);//设置下划线
     font.setOverline(false);//设置上划线
@@ -329,24 +329,9 @@ void main_interface::paintEvent(QPaintEvent *)
     painter->setFont(font);
     QRect ff(0,0,300,200);
     painter->setPen(QColor(Qt::red));
-    painter->drawText(ff,Qt::AlignCenter,"分数" + QString::number(object_manager_->read_score()));
+    painter->drawText(ff,Qt::AlignCenter,"分数" + QString::number(int(object_manager_->read_score())));
     if(start)
     {
-        static bool Trigger_cache = false;
-        if(object_manager_->read_score() > 0)
-        {
-            if((object_manager_->read_score() % 3000) == 0 && Trigger_cache && object_manager_->read_score() <= 30000)
-            {
-                object_manager_->add_enemy_number(1);
-                Trigger_cache = false;
-            }else if((object_manager_->read_score() % 1000) != 0)
-            {
-                Trigger_cache = true;
-            }
-        }else
-        {
-            Trigger_cache = true;
-        }
         bullet_management();
         bullet_calculation();
         for(unsigned int i = 0; i < object_manager_->return_enemy_number();i++)
@@ -527,11 +512,11 @@ void main_interface::bullet_calculation()
                     {
                         if(HP_judgment(object_manager_->return_enemy(i)->HP_Test(),object_manager_->return_oneself_me()->return__bullet_(j)->HP_Test()))
                         {
+                            object_manager_->add_score(object_manager_->return_enemy(i)->HP_max());
                             Kill_entity(1,i);
                             Kill_entity(0,j);
                             sound0->play();
                             sound0->setLoopCount(0);
-                            object_manager_->add_score(100);
                         }else
                         {
                             object_manager_->return_enemy(i)->HP_reduce(object_manager_->return_oneself_me()->return__bullet_(j)->HP_max());

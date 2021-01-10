@@ -11,11 +11,11 @@
 #define PI 3.141516
 
 
-int bass_object::HP_max()
+double bass_object::HP_max()
 {
     return HP_MAX;
 }
-int bass_object::HP_min()
+double bass_object::HP_min()
 {
     return HP_MIN;
 }
@@ -42,7 +42,7 @@ bass_object::bass_object(QPoint point, double Volume, double HP_max, double HP_m
     HP_MIN = HP_min;
     HP = HP_max;
 }
-int bass_object::HP_add()
+double bass_object::HP_add()
 {
     if(HP + 1 > HP_MAX)
     {
@@ -53,7 +53,7 @@ int bass_object::HP_add()
         return HP += 1;
     }
 }
-int bass_object::HP_add(double a)
+double bass_object::HP_add(double a)
 {
     if(HP + a > HP_MAX)
     {
@@ -64,7 +64,7 @@ int bass_object::HP_add(double a)
         return HP += a;
     }
 }
-int bass_object::HP_reduce()
+double bass_object::HP_reduce()
 {
     if(HP - 1 <= HP_MIN)
     {
@@ -75,7 +75,7 @@ int bass_object::HP_reduce()
         return HP -= 1;
     }
 }
-int bass_object::HP_reduce(double a)
+double bass_object::HP_reduce(double a)
 {
     if(HP - a <= HP_MIN)
     {
@@ -87,7 +87,7 @@ int bass_object::HP_reduce(double a)
     }
 }
 
-int bass_object::HP_Test()
+double bass_object::HP_Test()
 {
     return HP;
 }

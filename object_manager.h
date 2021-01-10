@@ -35,9 +35,9 @@ public:
     oneself * set_oneself_nullptr() { return oneself_me = nullptr; }
     enemy * new_enemy(int a);
     unsigned int return_enemy_number() { return enemy_number; }
-    unsigned long long read_score() { return score; }
-    unsigned long long set_score(unsigned long long a) { return score = a; }
-    unsigned long long add_score(unsigned long long a) { return score += a; }
+    double read_score() { return score; }
+    double set_score(double a) { return score = a; }
+    double add_score(double a) { return score += a; }
     oneself * new_oneself();
     unsigned int add_enemy_number(int a);
     unsigned int set_enemy_number(int a);
@@ -47,7 +47,7 @@ private:
     oneself * oneself_template;
     QVector<enemy*> enemy_1;
     enemy * enemy_1_template;
-    unsigned long long score = 0;
+    double score = 0;
 signals:
     void score_increase();
 
